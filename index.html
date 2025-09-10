@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chamber Logger Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Chamber Logger Dashboard</h1>
+
+    <div class="chart-container">
+        <canvas id="logChart"></canvas>
+    </div>
+	
+	<div id="archiveContainer">
+		<button id="refreshBtn" title="Refresh daftar file">⟳</button>
+		<select id="archiveSelect">
+			<option value="">-- Pilih file log --</option>
+		</select>
+		<button id="downloadBtn">Download</button>
+	</div>
+	
+	<div id="logContainer">
+		<h2>Log Sensor</h2>
+		<div class="table-wrapper">
+			<table id="logTable" border="1">
+				<thead>
+					<tr>
+						<th>Tanggal</th>
+						<th>Waktu</th>
+						<th>Temp 1</th>
+						<th>Temp 2</th>
+						<th>Hum 1</th>
+						<th>Hum 2</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- log entries akan muncul di sini -->
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="script.js"></script>
+</body>
+</html>
