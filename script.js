@@ -119,14 +119,15 @@ async function loadArchives() {
 
 // Tombol download CSV
 document.getElementById('downloadBtn').addEventListener('click', () => {
-    const select = document.getElementById('archiveSelect');
-    const fileUrl = select.value;
-
-    if (fileUrl) {
-        window.open(fileUrl, '_blank');
-    } else {
-        alert("Silakan pilih file log terlebih dahulu.");
-    }
+    const url = archiveSelect.value;
+	if (url) {
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = url.split("/").pop(); // otomatis ambil nama file dari URL
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+	}
 });
 
 document.getElementById('refreshBtn').addEventListener('click', loadArchives);
