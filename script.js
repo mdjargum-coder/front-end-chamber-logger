@@ -56,7 +56,7 @@ function updateTable(data) {
     let date = dt.toLocaleDateString("id-ID");
     let time = dt.toLocaleTimeString("id-ID");
 
-    let status = log.status || "ON";
+    let status = (log.status === "OFF") ? "OFF" : "ON";
 
     tr.innerHTML = `
       <td>${date}</td>
@@ -166,5 +166,6 @@ setInterval(() => {
   fetchLogs();
   fetchStatus();
 }, 60000);
+
 
 
