@@ -52,8 +52,7 @@ function updateTable(data) {
 
   data.forEach(log => {
     const tr = document.createElement("tr");
-
-    const dt = new Date(log.timestamp);
+    const dt = log.timestamp ? new Date(log.timestamp) : new Date();
     let date = dt.toLocaleDateString("id-ID");
     let time = dt.toLocaleTimeString("id-ID");
 
@@ -167,4 +166,5 @@ setInterval(() => {
   fetchLogs();
   fetchStatus();
 }, 60000);
+
 
