@@ -5,19 +5,27 @@ let logChart;
 async function fetchLogs() {
     try {
         const res = await fetch(`${API_BASE}/logs?t=${Date.now()}`);
+        if (!res.ok) throw new Error("Failed to fetch logs");
+
         const data = await res.json();
 
-        // ambil array waktu, temp1, temp2, hum1, hum2
-        const labels = data.map(log => log.waktu);
-        const temp1 = data.map(log => log.temperature1);
-        const temp2 = data.map(log => log.temperature2);
-        const hum1 = data.map(log => log.humidity1);
-        const hum2 = data.map(log => log.humidity2);
+        if (data.length > 0) {
+            // tetap tampilkan log terakhir meski chamber OFF
+            const labels = data.map(log => log.waktu);
+            const temp1 = data.map(log => log.temperature1);
+            const temp2 = data.map(log => log.temperature2);
+            const hum1 = data.map(log => log.humidity1);
+            const hum2 = data.map(log => log.humidity2);
 
-        updateChart(labels, temp1, temp2, hum1, hum2);
-        updateTable(data);
+            updateChart(labels, temp1, temp2, hum1, hum2);
+            updateTable(data);
+        } else {
+            console.warn("⚠️ Tidak ada data log baru, tampilkan data terakhir.");
+            // tidak reset tabel/chart, biarkan data terakhir tetap tampil
+        }
     } catch (err) {
         console.error("Failed to fetch logs:", err);
+        // fallback: jangan hapus data lama
     }
 }
 
@@ -140,3 +148,4 @@ loadArchives();
 // Refresh setiap 60 detik
 setInterval(fetchLogs, 60000);
 fetchLogs();
+
