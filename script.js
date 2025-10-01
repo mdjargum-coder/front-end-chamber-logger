@@ -167,3 +167,4 @@ setInterval(() => {
   fetchLogs();
   fetchStatus();
 }, 60000);
+
