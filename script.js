@@ -3,30 +3,28 @@ const chartCtx = document.getElementById('logChart').getContext('2d');
 let logChart;
 
 async function fetchLogs() {
-    try {
-        const res = await fetch(`${API_BASE}/logs?t=${Date.now()}`);
-        if (!res.ok) throw new Error("Failed to fetch logs");
+  try {
+    const res = await fetch("/logs");
+    const data = await res.json();
 
-        const data = await res.json();
+    if (data.length > 0) {
+      updateTable(data);
+      updateChart(data);
 
-        if (data.length > 0) {
-            // tetap tampilkan log terakhir meski chamber OFF
-            const labels = data.map(log => log.waktu);
-            const temp1 = data.map(log => log.temperature1);
-            const temp2 = data.map(log => log.temperature2);
-            const hum1 = data.map(log => log.humidity1);
-            const hum2 = data.map(log => log.humidity2);
-
-            updateChart(labels, temp1, temp2, hum1, hum2);
-            updateTable(data);
-        } else {
-            console.warn("⚠️ Tidak ada data log baru, tampilkan data terakhir.");
-            // tidak reset tabel/chart, biarkan data terakhir tetap tampil
-        }
-    } catch (err) {
-        console.error("Failed to fetch logs:", err);
-        // fallback: jangan hapus data lama
+      // tampilkan status terakhir
+      const lastStatus = data[data.length - 1].status;
+      document.getElementById("statusText").textContent =
+        lastStatus === "OFF" ? "⚠️ Chamber OFF" : "✅ Chamber ON";
+    } else {
+      // kalau DB kosong total
+      document.getElementById("statusText").textContent = "Belum ada data log";
     }
+
+    // daftar CSV harus tetap muncul
+    loadArchives();
+  } catch (err) {
+    console.error("Error fetch logs:", err);
+  }
 }
 
 // fungsi untuk update tabel
@@ -148,4 +146,5 @@ loadArchives();
 // Refresh setiap 60 detik
 setInterval(fetchLogs, 60000);
 fetchLogs();
+
 
