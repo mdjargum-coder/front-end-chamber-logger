@@ -35,8 +35,10 @@ function updateTable(data) {
     data.forEach(log => {
         const tr = document.createElement("tr");
 
-        let date = log.tanggal;       
-        let time = log.waktu;         
+        const dt = new Date(log.timestamp);
+		let date = dt.toLocaleDateString("id-ID");
+		let time = dt.toLocaleTimeString("id-ID");
+         
         let status = log.status || "ON";
 
         tr.innerHTML = `
@@ -146,5 +148,6 @@ loadArchives();
 // Refresh setiap 60 detik
 setInterval(fetchLogs, 60000);
 fetchLogs();
+
 
 
